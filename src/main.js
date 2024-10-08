@@ -130,6 +130,18 @@ async function listUrls(
 	const browser = await puppeteer.launch();
 	const page = await browser.newPage();
 
+	await page.setRequestInterception(true);
+
+	page.on("request", (request) => {
+		const resourceTypesToBlock = ["font", "image", "media", "stylesheet"];
+
+		if (resourceTypesToBlock.includes(request.resourceType())) {
+			request.abort();
+		} else {
+			request.continue();
+		}
+	});
+
 	page.setUserAgent(
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 \
 		(KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
