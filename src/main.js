@@ -15,6 +15,7 @@ async function delay(sec) {
 async function fetchUrls(
 	page,
 	url,
+	entryUrl,
 	allowedPattern,
 	disallowedPattern,
 	currentDepth,
@@ -41,6 +42,7 @@ async function fetchUrls(
 		const links = await extractLinks(
 			page,
 			url,
+			entryUrl,
 			allowedPattern,
 			disallowedPattern,
 			options.sameHost,
@@ -56,7 +58,7 @@ async function fetchUrls(
 
 		if (currentDepth < maxDepth) {
 			for (const link of links) {
-				urlQueue.push({ link, depth: currentDepth + 1 });
+				urlQueue.push({ link, entry: entryUrl, depth: currentDepth + 1 });
 			}
 		}
 	} catch (error) {
@@ -67,16 +69,17 @@ async function fetchUrls(
 async function extractLinks(
 	page,
 	baseUrl,
+	entryUrl,
 	allowedPattern,
 	disallowedPattern,
 	sameHost,
 	child,
 ) {
 	const links = new Set();
-	const base = new URL(baseUrl);
-	const basePath = base.pathname.endsWith("/")
-		? base.pathname
-		: `${base.pathname}/`;
+	const entry = new URL(entryUrl);
+	const entryPath = entry.pathname.endsWith("/")
+		? entry.pathname
+		: `${entry.pathname}/`;
 
 	const anchors = await page.$$eval("a", (elements) =>
 		elements.map((el) => el.href).filter((href) => href),
@@ -94,9 +97,9 @@ async function extractLinks(
 				: false;
 
 			const urlObj = new URL(absoluteUrl);
-			const isSameHost = sameHost ? urlObj.host === base.host : true;
+			const isSameHost = sameHost ? urlObj.host === entry.host : true;
 			const isChild = child
-				? urlObj.host === base.host && urlObj.pathname.startsWith(basePath)
+				? urlObj.host === entry.host && urlObj.pathname.startsWith(entryPath)
 				: true;
 
 			if (
@@ -137,14 +140,20 @@ async function listUrls(
 	}
 
 	for (const entryUrl of entryUrls) {
-		urlQueue.push({ link: entryUrl, depth: 1 });
+		urlQueue.push({ link: entryUrl, entry: entryUrl, depth: 1 });
 	}
 
 	while (urlQueue.length > 0) {
-		const { link: currentUrl, depth: currentDepth } = urlQueue.shift();
+		const {
+			link: currentUrl,
+			entry: currentEntryUrl,
+			depth: currentDepth,
+		} = urlQueue.shift();
+
 		await fetchUrls(
 			page,
 			currentUrl,
+			currentEntryUrl,
 			allowedPattern,
 			disallowedPattern,
 			currentDepth,
