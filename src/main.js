@@ -161,7 +161,7 @@ async function listUrls(
 			options,
 		);
 
-		if (urlQueue.length > 0) {
+		if (urlQueue.length > 0 && delaySec > 0) {
 			await delay(delaySec);
 		}
 	}
@@ -184,7 +184,7 @@ program
 	.option("--disallow <pattern>", "regex pattern for disallowed URLs")
 	.option(
 		"--delay <seconds>",
-		"time to wait between requests (default: 1)",
+		"time to wait between requests (default: 0)",
 		Number.parseInt,
 	)
 	.option(
@@ -205,7 +205,7 @@ program
 
 		const disallowedPattern = options.disallow;
 
-		const delaySec = options.delay ?? 1;
+		const delaySec = options.delay ?? 0;
 
 		const maxDepth = options.depth ?? 1;
 

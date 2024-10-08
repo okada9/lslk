@@ -17,7 +17,7 @@ lslk [options] <urls...>
 | `--child`              | Only follow links whose path is a child of the entry URL |
 | `--allow <pattern>`    | Regex pattern for allowed URLs                           |
 | `--disallow <pattern>` | Regex pattern for disallowed URLs                        |
-| `--delay <seconds>`    | Time to wait between requests (default: `1`)             |
+| `--delay <seconds>`    | Time to wait between requests (default: `0`)             |
 | `--depth <number>`     | Maximum depth of URL search (default: `1`)               |
 | `--disable-javascript` | Do not run JavaScript                                    |
 
