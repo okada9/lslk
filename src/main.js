@@ -147,7 +147,7 @@ async function listUrls(
 		(KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
 	);
 
-	if (options.disableJavaScript) {
+	if (options.disableJavascript) {
 		await page.setJavaScriptEnabled(false);
 	}
 
