@@ -46,7 +46,7 @@ async function fetchUrls(
 			allowedPattern,
 			disallowedPattern,
 			options.sameHost,
-			options.child,
+			options.children,
 		);
 
 		for (const link of links) {
@@ -73,7 +73,7 @@ async function extractLinks(
 	allowedPattern,
 	disallowedPattern,
 	sameHost,
-	child,
+	children,
 ) {
 	const links = new Set();
 	const entry = new URL(entryUrl);
@@ -98,7 +98,7 @@ async function extractLinks(
 
 			const urlObj = new URL(absoluteUrl);
 			const isSameHost = sameHost ? urlObj.host === entry.host : true;
-			const isChild = child
+			const isChild = children
 				? urlObj.host === entry.host && urlObj.pathname.startsWith(entryPath)
 				: true;
 
@@ -188,7 +188,7 @@ program
 	.arguments("<urls...>")
 	.option("--same-host", "only follow links on the same host", false)
 	.option(
-		"--child",
+		"--children",
 		"only follow links whose path is a child of the entry URL",
 		false,
 	)

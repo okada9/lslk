@@ -14,7 +14,7 @@ lslk [options] <urls...>
 | Option                 | Description                                              |
 | ---------------------- | -------------------------------------------------------- |
 | `--same-host`          | Only follow links on the same host                       |
-| `--child`              | Only follow links whose path is a child of the entry URL |
+| `--children`           | Only follow links whose path is a child of the entry URL |
 | `--allow <pattern>`    | Regex pattern for allowed URLs                           |
 | `--disallow <pattern>` | Regex pattern for disallowed URLs                        |
 | `--delay <seconds>`    | Time to wait between requests (default: `0`)             |
@@ -32,7 +32,7 @@ lslk --same-host 'https://en.wikipedia.org/wiki/Main_Page'
 List URLs of recent posts on a subreddit:
 
 ```bash
-lslk --child 'https://www.reddit.com/r/technology/'
+lslk --children 'https://www.reddit.com/r/technology/'
 ```
 
 List URLs of recent social media posts from an account:
