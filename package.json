@@ -7,7 +7,7 @@
   "description": "Command-line tool for listing links on web pages",
   "dependencies": {
     "commander": "^12.1.0",
-    "puppeteer": "^23.9.0"
+    "puppeteer": "^23.10.1"
   },
   "bin": {
     "lslk": "src/main.js"
